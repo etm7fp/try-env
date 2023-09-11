@@ -15,4 +15,4 @@ jobs:
     steps:
       - name: Print message
         run: |
-          echo "${{ needs.save.outputs }}"
+          echo "${{ needs.save.outputs.message }}"
