@@ -1,7 +1,17 @@
-name: build
+name: Build
 
 on: push
 
 jobs:
   call_reusable_workflow:
     uses: ./.github/workflows/reusable-workflow.yml
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: Build application
+        run: |
+          pnpm run build
