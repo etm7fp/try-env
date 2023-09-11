@@ -9,5 +9,6 @@ jobs:
   change-output-directory:
     uses: ./.github/workflows/build.yml
     with:
+      artifact-name: output
       build-command: pnpm run build --outDir output
       publish-directory: output
