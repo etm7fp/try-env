@@ -1,14 +1,20 @@
 name: Build (parallel jobs)
 
-on: workflow_dispatch
+on: push
 
 jobs:
   default:
     uses: ./.github/workflows/build.yml
+    if: github.ref_name == 'main'
+    with:
+      environment: production
+      environment-url: https://github.com/etm7fp/try-env/tree/main
 
   change-output-directory:
     uses: ./.github/workflows/build.yml
+    if: github.ref_name == 'develop'
     with:
       artifact-name: output
       build-command: pnpm run build --outDir output
+      environment: development
       publish-directory: output
