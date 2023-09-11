@@ -4,42 +4,34 @@ on: push
 
 jobs:
   production:
-    uses: ./.github/workflows/build.yml
+    runs-on: ubuntu-latest
     if: github.ref_name == 'main'
-    with:
-      artifact-name: ${{ vars.DEPLOY_ENV }}
     environment:
       name: production
       url: https://github.com/etm7fp/try-env/tree/main
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
 
-  #   runs-on: ubuntu-latest
-  #   if: github.ref_name == 'main'
-  #   environment:
-  #     name: production
-  #     url: https://github.com/etm7fp/try-env/tree/main
-  #   steps:
-  #     - name: Print var
-  #       run: |
-  #         echo "${{ vars.DEPLOY_ENV }}"
+  development:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'develop'
+    environment:
+      name: development
+      url: https://github.com/etm7fp/try-env/tree/develop
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
 
-  # development:
-  #   runs-on: ubuntu-latest
-  #   if: github.ref_name == 'develop'
-  #   environment:
-  #     name: development
-  #     url: https://github.com/etm7fp/try-env/tree/develop
-  #   steps:
-  #     - name: Print var
-  #       run: |
-  #         echo "${{ vars.DEPLOY_ENV }}"
-
-  # post-job:
-  #   runs-on: ubuntu-latest
-  #   if: always() && contains(needs.*.result, 'success')
-  #   needs:
-  #     - production
-  #     - development
-  #   steps:
-  #     - name: Print var
-  #       run: |
-  #         echo "${{ vars.DEPLOY_ENV }}"
+  post-job:
+    runs-on: ubuntu-latest
+    if: always() && contains(needs.*.result, 'success')
+    needs:
+      - production
+      - development
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
