@@ -1,13 +1,18 @@
+# see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
 name: output
 
-on: push
+on: workflow_dispatch
 
 jobs:
   save:
     runs-on: ubuntu-latest
+
+    # https://zenn.dev/kenpi/articles/af6fb5b4c2675e
     environment:
       name: production
       url: https://github.com/etm7fp/try-env/tree/main
+
+    # see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
     outputs:
       message: ${{ steps.save_step.outputs.message }}
       secret_message: ${{ steps.save_step.outputs.secret_message }}
