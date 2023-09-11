@@ -5,13 +5,20 @@ on: push
 jobs:
   save:
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://github.com/etm7fp/try-env/tree/main
     outputs:
       message: ${{ steps.save_step.outputs.message }}
+      secret_message: ${{ steps.save_step.outputs.secret_message }}
+      variable_message: ${{ steps.save_step.outputs.variable_message }}
     steps:
       - name: Save message
         id: save_step
         run: |
           echo "message=hello" >> $GITHUB_OUTPUT
+          echo "secret_message=${{ secrets.SECRET_MESSAGE }}" >> $GITHUB_OUTPUT
+          echo "variable_message=${{ vars.VARIABLE_MESSAGE }}" >> $GITHUB_OUTPUT
   print:
     runs-on: ubuntu-latest
     needs: save
@@ -19,3 +26,5 @@ jobs:
       - name: Print message
         run: |
           echo "${{ needs.save.outputs.message }}"
+          echo "${{ needs.save.outputs.secret_message }}"
+          echo "${{ needs.save.outputs.variable_message }}"
