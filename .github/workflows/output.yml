@@ -5,8 +5,11 @@ on: push
 jobs:
   save:
     runs-on: ubuntu-latest
+    outputs:
+      message: ${{ steps.save_step.outputs.message }}
     steps:
       - name: Save message
+        id: save_step
         run: |
           echo "message=hello" >> $GITHUB_OUTPUT
   print:
