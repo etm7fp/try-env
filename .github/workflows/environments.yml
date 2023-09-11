@@ -8,9 +8,17 @@ jobs:
     environment:
       name: production
       url: https://github.com/etm7fp/try-env/tree/main
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
 
   development:
     runs-on: ubuntu-latest
     environment:
       name: development
       url: https://github.com/etm7fp/try-env/tree/develop
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
