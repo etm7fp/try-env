@@ -22,3 +22,7 @@ jobs:
         run: |
           node --version
           pnpm --version
+
+      - name: Build application
+        run: |
+          pnpm run build
