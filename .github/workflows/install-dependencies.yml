@@ -18,6 +18,11 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
+      - name: Print versions
+        run: |
+          node --version
+          pnpm --version
+
       # see https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
       - name: Get pnpm store directory
         run: |
@@ -39,15 +44,6 @@ jobs:
 
       - name: Install dependencies
         if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
-        run: |
-          pnpm install
-
-      - name: Print versions
-        run: |
-          node --version
-          pnpm --version
-
-      - name: Install dependencies
         run: |
           pnpm install
 
