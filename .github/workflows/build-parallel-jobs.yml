@@ -17,4 +17,5 @@ jobs:
       artifact-name: output
       build-command: pnpm run build --outDir output
       environment: development
+      environment-url: https://github.com/etm7fp/try-env/tree/develop
       publish-directory: output

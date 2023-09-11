@@ -15,6 +15,7 @@ on:
         required: true
       environment-url:
         type: string
+        required: true
       publish-directory:
         type: string
         default: dist
@@ -24,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environment }}
-      url: ${{ inputs.environment-url }}
     steps:
       # see https://github.com/actions/checkout
       - name: Checkout
