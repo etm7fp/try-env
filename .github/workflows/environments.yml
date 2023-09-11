@@ -1,0 +1,16 @@
+name: Environment
+
+on: push
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://github.com/etm7fp/try-env/tree/main
+
+  development:
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: https://github.com/etm7fp/try-env/tree/develop
