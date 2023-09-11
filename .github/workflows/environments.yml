@@ -24,3 +24,14 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+
+  post-job:
+    runs-on: ubuntu-latest
+    if: always() && contains(needs.*.result, 'success')
+    needs:
+      - production
+      - development
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
