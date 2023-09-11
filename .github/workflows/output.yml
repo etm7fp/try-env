@@ -17,7 +17,9 @@ jobs:
         id: save_step
         run: |
           echo "message=hello" >> $GITHUB_OUTPUT
-          echo "secret_message=${{ secrets.SECRET_MESSAGE }}" >> $GITHUB_OUTPUT
+          secret_message=${{ secrets.SECRET_MESSAGE }}
+          echo "::add-mask::$secret_message"
+          echo "secret_message=$secret_message" >> $GITHUB_OUTPUT
           echo "variable_message=${{ vars.VARIABLE_MESSAGE }}" >> $GITHUB_OUTPUT
   print:
     runs-on: ubuntu-latest
