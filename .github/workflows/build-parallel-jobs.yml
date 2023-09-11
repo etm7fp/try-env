@@ -4,10 +4,10 @@ on: push
 
 jobs:
   default:
-    uses: ./.github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/build.yml
 
   change-output-directory:
-    uses: ./.github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/build.yml
     with:
       build-command: pnpm run build --outDir output
       publish-directory: output
