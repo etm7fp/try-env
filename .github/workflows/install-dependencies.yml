@@ -1,0 +1,24 @@
+name: output
+
+on: push
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      # https://github.com/pnpm/action-setup
+      - uses: pnpm/action-setup@v2
+
+      # see https://github.com/actions/setup-node
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Print versions
+        run: |
+          node --version
+          pnpm --version
