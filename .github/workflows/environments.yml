@@ -8,7 +8,7 @@ jobs:
     if: github.ref_name == 'main'
     environment:
       name: production
-      url: https://github.com/etm7fp/try-env/tree/main
+      url: "${{ vars.ENVIRONMENT_URL }}"
     steps:
       - name: Print var
         run: |
@@ -19,7 +19,7 @@ jobs:
     if: github.ref_name == 'develop'
     environment:
       name: development
-      url: https://github.com/etm7fp/try-env/tree/develop
+      url: "${{ vars.ENVIRONMENT_URL }}"
     steps:
       - name: Print var
         run: |
