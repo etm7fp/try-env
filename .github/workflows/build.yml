@@ -19,3 +19,27 @@ jobs:
       - name: Build application
         run: |
           pnpm run build
+
+      # see https://github.com/actions/upload-artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: dist
+
+  list:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # see https://github.com/actions/download-artifact
+      - name: download artifact
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: Display structure of downloaded files
+        working-directory: dist
+        run: ls -R
+
+      - name: Print download path
+        run: echo ${{steps.download.outputs.download-path}}
