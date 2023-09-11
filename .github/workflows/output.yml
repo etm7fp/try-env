@@ -28,5 +28,6 @@ jobs:
       - name: Print message
         run: |
           echo "${{ needs.save.outputs.message }}"
+          echo "${{ secrets.SECRET_MESSAGE }}"
           echo "${{ needs.save.outputs.secret_message }}"
           echo "${{ needs.save.outputs.variable_message }}"
