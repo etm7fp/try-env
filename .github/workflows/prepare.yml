@@ -9,34 +9,35 @@ jobs:
       # see https://github.com/actions/checkout
       - uses: actions/checkout@v4
 
-      # see https://github.com/pnpm/action-setup
-      - uses: pnpm/action-setup@v2
+      # # see https://github.com/pnpm/action-setup
+      # - uses: pnpm/action-setup@v2
 
-      # see https://github.com/actions/setup-node
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
+      # # see https://github.com/actions/setup-node
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version-file: .nvmrc
+      #     cache: pnpm
 
-      - name: Print versions
-        run: |
-          node --version
-          pnpm --version
+      # - name: Print versions
+      #   run: |
+      #     node --version
+      #     pnpm --version
 
-      # see https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
-      - name: Get pnpm store directory
-        run: |
-          echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      # # see https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
+      # - name: Get pnpm store directory
+      #   run: |
+      #     echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      # see https://github.com/actions/cache
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      # # see https://github.com/actions/cache
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ env.PNPM_STORE_PATH }}
+      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: |
-          pnpm install
+        # run: |
+        #   pnpm install
+        uses: ./.github/actions/install-dependencies
