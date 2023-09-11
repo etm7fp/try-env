@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/build.yml
+      - uses: ./.github/workflows/prepare.yml
 
       - name: Build application
         run: |
