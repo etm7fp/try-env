@@ -35,3 +35,14 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+
+  empty-url:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    environment:
+      name: production
+      url: ""
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"
