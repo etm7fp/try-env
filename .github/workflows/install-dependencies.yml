@@ -31,19 +31,13 @@ jobs:
       # see https://github.com/actions/cache
       - uses: actions/cache@v3
         name: Setup pnpm cache
-        id: pnpm-cache
         with:
           path: ${{ env.PNPM_STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Print outputs
-        run: |
-          echo '${{ toJSON(steps.pnpm-cache.outputs) }}'
-
       - name: Install dependencies
-        if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
         run: |
           pnpm install
 
