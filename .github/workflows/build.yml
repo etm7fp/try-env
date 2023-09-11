@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environment }}
+      url: "${{ vars.ENVIRONMENT_URL }}"
     steps:
       # see https://github.com/actions/checkout
       - name: Checkout
