@@ -25,5 +25,6 @@ jobs:
     if: github.ref_name == 'main'
     with:
       artifact-name: undefined
+      build-command: pnpm run invalid
       environment: undefined
       environment-url: https://github.com/etm7fp/try-env
