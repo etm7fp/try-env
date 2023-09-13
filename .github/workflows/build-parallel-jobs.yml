@@ -19,3 +19,11 @@ jobs:
       environment: development
       environment-url: https://github.com/etm7fp/try-env/tree/develop
       publish-directory: output
+
+  environment-undefined:
+    uses: ./.github/workflows/build.yml
+    if: github.ref_name == 'main'
+    with:
+      artifact-name: undefined
+      environment: undefined
+      environment-url: https://github.com/etm7fp/try-env
