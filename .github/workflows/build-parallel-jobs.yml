@@ -1,10 +1,12 @@
 name: Build (parallel jobs)
 
-on:
-  push:
-    branches:
-      - main
-      - develop
+on: workflow_dispatch
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - develop
 
 # on:
 #   pull_request:
