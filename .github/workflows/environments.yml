@@ -13,6 +13,9 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+          echo $DEPLOY_ENV
+          echo $ENVIRONMENT_URL
+          echo $TEST_REPOSITORY_VARIABLE
 
   development:
     runs-on: ubuntu-latest
@@ -24,6 +27,9 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+          echo $DEPLOY_ENV
+          echo $ENVIRONMENT_URL
+          echo $TEST_REPOSITORY_VARIABLE
 
   post-job:
     runs-on: ubuntu-latest
@@ -35,6 +41,9 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+          echo $DEPLOY_ENV
+          echo $ENVIRONMENT_URL
+          echo $TEST_REPOSITORY_VARIABLE
 
   empty-url:
     runs-on: ubuntu-latest
@@ -46,3 +55,6 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+          echo $DEPLOY_ENV
+          echo $ENVIRONMENT_URL
+          echo $TEST_REPOSITORY_VARIABLE
