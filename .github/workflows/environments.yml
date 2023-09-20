@@ -11,11 +11,15 @@ jobs:
       url: "${{ vars.ENVIRONMENT_URL }}"
     steps:
       - name: Print var
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
+          RENAMED_DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
           echo $DEPLOY_ENV
           echo $ENVIRONMENT_URL
           echo $TEST_REPOSITORY_VARIABLE
+          echo $RENAMED_DEPLOY_ENV
 
   development:
     runs-on: ubuntu-latest
@@ -25,11 +29,15 @@ jobs:
       url: "${{ vars.ENVIRONMENT_URL }}"
     steps:
       - name: Print var
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
+          RENAMED_DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
           echo $DEPLOY_ENV
           echo $ENVIRONMENT_URL
           echo $TEST_REPOSITORY_VARIABLE
+          echo $RENAMED_DEPLOY_ENV
 
   post-job:
     runs-on: ubuntu-latest
@@ -39,11 +47,15 @@ jobs:
       - development
     steps:
       - name: Print var
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
+          RENAMED_DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
           echo $DEPLOY_ENV
           echo $ENVIRONMENT_URL
           echo $TEST_REPOSITORY_VARIABLE
+          echo $RENAMED_DEPLOY_ENV
 
   empty-url:
     runs-on: ubuntu-latest
@@ -53,8 +65,12 @@ jobs:
       url: ""
     steps:
       - name: Print var
+        env:
+          DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
+          RENAMED_DEPLOY_ENV: ${{ vars.DEPLOY_ENV }}
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
           echo $DEPLOY_ENV
           echo $ENVIRONMENT_URL
           echo $TEST_REPOSITORY_VARIABLE
+          echo $RENAMED_DEPLOY_ENV
