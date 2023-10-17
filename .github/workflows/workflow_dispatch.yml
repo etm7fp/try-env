@@ -1,4 +1,4 @@
-name: Reusable workflow
+name: Workflow dispatch
 
 on:
   # see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
