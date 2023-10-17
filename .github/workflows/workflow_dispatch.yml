@@ -32,3 +32,18 @@ jobs:
             }')[github.ref_name] }}
         run: |
           echo ${{ env.ENV_NAME }}
+      - name: try fromJSON with format
+        env:
+          COMMAND: |
+            ${{ fromJSON(
+              format(
+                '{{
+                  "main": "{0}",
+                  "develop": "{1}"
+                }}',
+                vars.COMMAND_A,
+                vars.COMMAND_B
+              )
+            )[github.ref_name] }}
+        run: |
+          echo ${{ env.COMMAND }}
