@@ -20,3 +20,6 @@ jobs:
       - name: Print inputs
         run: |
           echo ${{ inputs.app }}
+      - name: Print context
+        run: |
+          echo ${{ github.ref_name }}
