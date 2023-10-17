@@ -16,6 +16,9 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      env-name: ${{ steps.set-env-name.outputs.env-name }}
+      command: ${{ steps.set-command.outputs.command }}
     steps:
       - name: Print inputs
         run: |
@@ -24,6 +27,7 @@ jobs:
         run: |
           echo ${{ github.ref_name }}
       - name: try fromJSON
+        id: set-env-name
         env:
           ENV_NAME: |
             ${{ fromJSON('{
@@ -31,8 +35,9 @@ jobs:
               "develop": "development"
             }')[github.ref_name] }}
         run: |
-          echo ${{ env.ENV_NAME }}
+          echo "env-name=${{ env.ENV_NAME }}" >> $GITHUB_OUTPUT
       - name: try fromJSON with format
+        id: set-command
         env:
           COMMAND: |
             ${{ fromJSON(
@@ -46,4 +51,14 @@ jobs:
               )
             )[github.ref_name] }}
         run: |
-          echo ${{ env.COMMAND }}
+          echo "command=${{ env.COMMAND }}" >> $GITHUB_OUTPUT
+
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: prepare
+    steps:
+      - name: Print outputs
+        run: |
+          echo ${{ needs.prepare.outputs.env-name }}
+          echo ${{ needs.prepare.outputs.command }}
