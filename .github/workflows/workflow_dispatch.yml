@@ -1,0 +1,22 @@
+name: Reusable workflow
+
+on:
+  # see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Target app
+        required: true
+        type: choice
+        options:
+          - a
+          - b
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Print inputs
+        run: |
+          echo ${{ inputs.app }}
