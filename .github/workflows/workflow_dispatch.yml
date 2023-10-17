@@ -16,6 +16,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: contains(fromJSON('["main", "develop"]'), github.ref_name)
     outputs:
       env-name: ${{ steps.set-env-name.outputs.env-name }}
       command: ${{ steps.set-command.outputs.command }}
