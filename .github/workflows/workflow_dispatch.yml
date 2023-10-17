@@ -23,3 +23,12 @@ jobs:
       - name: Print context
         run: |
           echo ${{ github.ref_name }}
+      - name: try fromJSON
+        env:
+          ENV_NAME: |
+            ${{ fromJSON('{
+              "main": "production",
+              "develop": "development",
+            }')[github.ref_name] }}
+        run: |
+          echo ${{ env.ENV_NAME }}
