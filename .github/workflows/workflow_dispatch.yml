@@ -28,7 +28,7 @@ jobs:
           ENV_NAME: |
             ${{ fromJSON('{
               "main": "production",
-              "develop": "development",
+              "develop": "development"
             }')[github.ref_name] }}
         run: |
           echo ${{ env.ENV_NAME }}
