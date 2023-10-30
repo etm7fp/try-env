@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: cat $GITHUB_EVENT_PATH
+      - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v2
         id: changes
         with:
