@@ -1,0 +1,21 @@
+name: pull-request
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: |
+          echo "${{ github.ref_name }}"
