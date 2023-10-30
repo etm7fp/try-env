@@ -1,0 +1,28 @@
+name: paths-filter
+
+on: push
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    steps:
+      - run: cat $GITHUB_EVENT_PATH
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            a:
+              - 'apps/a/**'
+            b:
+              - 'apps/b/**'
+            configs:
+              - 'packages/configs/**'
+      - if: steps.changes.outputs.a == 'true'
+        run: |
+          echo a
+      - if: steps.changes.outputs.b == 'true'
+        run: |
+          echo b
+      - if: steps.changes.outputs.configs == 'true'
+        run: |
+          echo configs
