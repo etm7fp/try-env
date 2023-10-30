@@ -1,6 +1,9 @@
 name: paths-filter
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   filter:
