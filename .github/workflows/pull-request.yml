@@ -15,7 +15,6 @@ jobs:
       - run: |
           echo "${{ github.ref }}"
           echo "${{ github.ref_name }}"
-          echo "${{ toJSON(github.event) }}"
 
   env:
     runs-on: ubuntu-latest
