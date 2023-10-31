@@ -8,6 +8,7 @@ on:
       - "apps/a/**"
       - "apps/b/**"
       - "!**.md"
+  workflow_dispatch:
 
 jobs:
   filter:
@@ -15,6 +16,8 @@ jobs:
     timeout-minutes: 3
     steps:
       - run: cat $GITHUB_EVENT_PATH
+      - run: cat $GITHUB_EVENT_NAME
+      - run: echo ${{ github.event_name }}
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v2
         id: changes
