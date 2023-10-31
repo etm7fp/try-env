@@ -12,7 +12,7 @@ on:
 
 jobs:
   changes:
-    runs-on: ubuntu-atest
+    runs-on: ubuntu-latest
     timeout-minutes: 3
     if: github.event_name == 'push'
     outputs:
@@ -37,7 +37,7 @@ jobs:
           echo "${{ toJSON(steps.filter.outputs) }}"
 
   a:
-    runs-on: ubuntu-atest
+    runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
     if: needs.changes.outputs.a == 'true'
@@ -46,7 +46,7 @@ jobs:
           echo a
 
   b:
-    runs-on: ubuntu-atest
+    runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
     if: needs.changes.outputs.b == 'true'
@@ -55,7 +55,7 @@ jobs:
           echo b
 
   c:
-    runs-on: ubuntu-atest
+    runs-on: ubuntu-latest
     timeout-minutes: 3
     if: github.event_name == 'workflow_dispatch'
     steps:
