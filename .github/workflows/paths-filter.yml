@@ -11,25 +11,53 @@ on:
   workflow_dispatch:
 
 jobs:
-  filter:
-    runs-on: ubuntu-latest
+  changes:
+    runs-on: ubuntu-atest
     timeout-minutes: 3
+    if: github.event_name == 'push'
+    outputs:
+      a: ${{ steps.filter.outputs.a }}
+      b: ${{ steps.filter.outputs.b }}
     steps:
-      - run: cat $GITHUB_EVENT_PATH
-      - run: echo ${{ github.event_name }}
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v2
-        id: changes
+      # see https://github.com/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # see https://github.com/dorny/paths-filter
+      - name: Change detection
+        uses: dorny/paths-filter@v2
+        id: filter
         with:
           filters: |
             a:
               - 'apps/a/**'
             b:
               - 'apps/b/**'
-            configs:
-              - 'packages/configs/**'
       - run: |
-          echo "${{ toJSON(steps.changes.outputs) }}"
-      - if: steps.changes.outputs.a == 'true'
-        run: |
+          echo "${{ toJSON(steps.filter.outputs) }}"
+
+  a:
+    runs-on: ubuntu-atest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.a == 'true'
+    steps:
+      - run: |
           echo a
+
+  b:
+    runs-on: ubuntu-atest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.b == 'true'
+    steps:
+      - run: |
+          echo b
+
+  c:
+    runs-on: ubuntu-atest
+    timeout-minutes: 3
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - run: |
+          echo workflow_dispatch
