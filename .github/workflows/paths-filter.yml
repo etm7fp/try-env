@@ -22,26 +22,8 @@ jobs:
               - 'apps/b/**'
             configs:
               - 'packages/configs/**'
+      - run: |
+          echo "${{ toJSON(steps.changes.outputs) }}"
       - if: steps.changes.outputs.a == 'true'
         run: |
           echo a
-      - if: steps.changes.outputs.b == 'true'
-        run: |
-          echo b
-      - if: steps.changes.outputs.configs == 'true'
-        run: |
-          echo configs
-      - run: |
-          echo "${{ github.ref }}"
-          echo "${{ github.ref_name }}"
-          echo "${{ toJSON(github.event) }}"
-
-  env:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    environment:
-      name: production
-    steps:
-      - name: Print var
-        run: |
-          echo "${{ vars.DEPLOY_ENV }}"
