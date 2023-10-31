@@ -21,7 +21,7 @@ jobs:
         with:
           filters: |
             a:
-              - 'a/**'
+              - 'apps/a/**'
             b:
               - 'apps/b/**'
             configs:
