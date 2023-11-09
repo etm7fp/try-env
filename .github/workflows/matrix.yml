@@ -48,7 +48,7 @@ jobs:
       a: ${{ steps.filter.outputs.a }}
       b: ${{ steps.filter.outputs.b }}
       changes: ${{ steps.filter.outputs.changes }}
-      length: ${{ steps.filter.outputs.counter }}
+      length: ${{ steps.counter.outputs.length }}
     steps:
       # see https://github.com/actions/checkout
       - name: Checkout
@@ -72,6 +72,7 @@ jobs:
           echo "${{ steps.filter.outputs.changes }}" | jq  'length'
       - run: |
           length=$(echo "${{ steps.filter.outputs.changes }}" | jq 'length')
+          echo "${length}"
           echo "length=${length}" >> $GITHUB_OUTPUT
         id: counter
 
