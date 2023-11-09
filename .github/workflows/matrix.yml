@@ -48,6 +48,7 @@ jobs:
       a: ${{ steps.filter.outputs.a }}
       b: ${{ steps.filter.outputs.b }}
       changes: ${{ steps.filter.outputs.changes }}
+      length: ${{ steps.filter.outputs.counter }}
     steps:
       # see https://github.com/actions/checkout
       - name: Checkout
@@ -69,6 +70,10 @@ jobs:
           echo "${{ join(steps.filter.outputs.changes) }}"
       - run: |
           echo "${{ join(steps.filter.outputs.changes) }}" | jq  'length'
+      - run: |
+          length=$(${{ join(steps.filter.outputs.changes) }}" | jq 'length')
+          echo "length=${length} >> $GITHUB_OUTPUT
+        id: counter
 
   # check:
   #   runs-on: ubuntu-latest
@@ -92,3 +97,11 @@ jobs:
     steps:
       - run: |
           echo "${{ matrix.changes }}"
+
+  print:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    steps:
+      - run: |
+          echo "${{ toJSON(needs.changes.outputs) }}"
