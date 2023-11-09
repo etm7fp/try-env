@@ -1,13 +1,13 @@
 name: paths-filter
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "apps/a/**"
-      - "apps/b/**"
-      - "!**.md"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "apps/a/**"
+  #     - "apps/b/**"
+  #     - "!**.md"
   workflow_dispatch:
 
 jobs:
