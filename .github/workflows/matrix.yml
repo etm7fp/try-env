@@ -57,11 +57,21 @@ jobs:
       - run: |
           echo "${{ join(steps.filter.outputs) }}"
 
-  dynamic:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
     if: join(needs.changes.outputs.changes) != ''
+    steps:
+      - run: |
+          echo "${{ toJSON(needs.changes.outputs.changes) }}"
+
+  dynamic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs:
+      - changes
+      - check
     strategy:
       matrix:
         changes: ${{ fromJSON(needs.changes.outputs.changes) }}
