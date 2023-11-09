@@ -68,7 +68,7 @@ jobs:
       - run: |
           echo "${{ join(steps.filter.outputs.changes) }}"
       - run: |
-          ${{ join(steps.filter.outputs.changes) }} | jq
+          '${{ join(steps.filter.outputs.changes) }}' | jq 'length'
 
   check:
     runs-on: ubuntu-latest
