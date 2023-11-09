@@ -16,13 +16,3 @@ jobs:
     steps:
       - run: |
           echo "${{ matrix.targets }}"
-
-  empty:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        targets: []
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
