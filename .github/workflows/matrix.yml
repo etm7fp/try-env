@@ -30,6 +30,16 @@ jobs:
       - run: |
           echo "${{ matrix.targets }}"
 
+  include:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    strategy:
+      matrix:
+        include: []
+    steps:
+      - run: |
+          echo "${{ matrix }}"
+
   changes:
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -55,13 +65,15 @@ jobs:
       - run: |
           echo "${{ toJSON(steps.filter.outputs) }}"
       - run: |
-          echo "${{ join(steps.filter.outputs) }}"
+          echo "${{ join(steps.filter.outputs.changes) }}"
+      - run: |
+          ${{ join(steps.filter.outputs.changes) }} | jq
 
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
-    if: join(needs.changes.outputs.changes) != ''
+    if: join(needs.changes.outputs.changes) != '[]'
     steps:
       - run: |
           echo "${{ toJSON(needs.changes.outputs.changes) }}"
