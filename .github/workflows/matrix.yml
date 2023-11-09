@@ -9,7 +9,6 @@ jobs:
   basic:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: changes
     strategy:
       matrix:
         targets: ["a", "b", "c"]
@@ -20,7 +19,6 @@ jobs:
   exclude:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: changes
     strategy:
       matrix:
         targets: ["a", "b", "c"]
@@ -56,11 +54,14 @@ jobs:
               - 'apps/b/**'
       - run: |
           echo "${{ toJSON(steps.filter.outputs) }}"
+      - run: |
+          echo "${{ join(steps.filter.outputs) }}"
 
   dynamic:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
+    if: join(needs.changes.outputs.changes) != ''
     strategy:
       matrix:
         changes: ${{ fromJSON(needs.changes.outputs.changes) }}
