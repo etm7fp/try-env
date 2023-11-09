@@ -91,7 +91,7 @@ jobs:
     needs:
       - changes
       # - check
-    if: join(needs.changes.outputs.changes) != '[]'
+    if: needs.changes.outputs.length > 0
     strategy:
       matrix:
         changes: ${{ fromJSON(needs.changes.outputs.changes) }}
