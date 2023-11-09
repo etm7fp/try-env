@@ -6,6 +6,32 @@ on:
       - main
 
 jobs:
+  basic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    strategy:
+      matrix:
+        targets: ["a", "b", "c"]
+    steps:
+      - run: |
+          echo "${{ matrix.targets }}"
+
+  exclude:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    strategy:
+      matrix:
+        targets: ["a", "b", "c"]
+        exclude:
+          - targets: "a"
+          - targets: "b"
+          - targets: "c"
+    steps:
+      - run: |
+          echo "${{ matrix.targets }}"
+
   changes:
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -31,7 +57,7 @@ jobs:
       - run: |
           echo "${{ toJSON(steps.filter.outputs) }}"
 
-  basic:
+  dynamic:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
