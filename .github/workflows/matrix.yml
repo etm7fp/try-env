@@ -35,10 +35,11 @@ jobs:
     timeout-minutes: 3
     strategy:
       matrix:
-        include: []
+        include:
+          - targets: "a"
     steps:
       - run: |
-          echo "${{ matrix }}"
+          echo "${{ matrix.targets }}"
 
   changes:
     runs-on: ubuntu-latest
