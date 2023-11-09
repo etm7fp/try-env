@@ -67,12 +67,12 @@ jobs:
       - run: |
           echo "${{ toJSON(steps.filter.outputs) }}"
       - run: |
-          echo "${{ join(steps.filter.outputs.changes) }}"
+          echo "${{ steps.filter.outputs.changes }}"
       - run: |
-          echo "${{ join(steps.filter.outputs.changes) }}" | jq  'length'
+          echo "${{ steps.filter.outputs.changes }}" | jq  'length'
       - run: |
-          length=$(echo "${{ join(steps.filter.outputs.changes) }}" | jq 'length')
-          echo "length=${length} >> $GITHUB_OUTPUT
+          length=$(echo "${{ steps.filter.outputs.changes }}" | jq 'length')
+          echo "length=${length}" >> $GITHUB_OUTPUT
         id: counter
 
   # check:
