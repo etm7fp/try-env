@@ -4,15 +4,40 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      a: ${{ steps.filter.outputs.a }}
+      b: ${{ steps.filter.outputs.b }}
+      changes: ${{ steps.filter.outputs.changes }}
+    steps:
+      # see https://github.com/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # see https://github.com/dorny/paths-filter
+      - name: Change detection
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            a:
+              - 'apps/a/**'
+            b:
+              - 'apps/b/**'
+      - run: |
+          echo "${{ toJSON(steps.filter.outputs) }}"
+
   basic:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    needs: changes
     strategy:
       matrix:
-        targets: ["a", "b", "c"]
+        changes: ${{ fromJSON(needs.changes.outputs.changes) }}
     steps:
       - run: |
-          echo "${{ matrix.targets }}"
+          echo "${{ matrix.changes }}"
