@@ -151,17 +151,17 @@ jobs:
       - run: |
           pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
-  passing:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    needs:
-      - lint
-      - test
-    if: failure() == false && contains(needs.*.result, 'cancelled') == false
-    steps:
-      - run: echo "$json"
-        env:
-          json: ${{ toJSON(needs) }}
+  # passing:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   needs:
+  #     - lint
+  #     - test
+  #   if: failure() == false && contains(needs.*.result, 'cancelled') == false
+  #   steps:
+  #     - run: echo "$json"
+  #       env:
+  #         json: ${{ toJSON(needs) }}
 
   # jq1:
   #   runs-on: ubuntu-latest
