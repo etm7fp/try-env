@@ -96,8 +96,12 @@ jobs:
       matrix:
         changes: ${{ fromJSON(needs.changes.outputs.changes) }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
       - run: |
-          echo "${{ matrix.changes }}"
+          pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
   print:
     runs-on: ubuntu-latest
