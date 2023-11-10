@@ -79,7 +79,7 @@ jobs:
       - run: |
           echo '${{ steps.filter.outputs.changes }}' | jq 'length'
       - run: |
-          length=$(echo "${{ steps.filter.outputs.changes }}" | jq 'length')
+          length=$(echo '${{ steps.filter.outputs.changes }}' | jq 'length')
           echo "${length}"
           echo "length=${length}" >> $GITHUB_OUTPUT
         id: counter
