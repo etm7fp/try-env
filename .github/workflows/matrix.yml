@@ -157,14 +157,13 @@ jobs:
     needs:
       - lint
       - test
-    # if: failure() == false && contains(needs.*.result, 'cancelled') == false
     if: ${{ !cancelled() }}
     steps:
       - run: echo "$json"
         env:
           json: ${{ toJSON(needs) }}
       - run: exit 1
-        if: failure()
+        if: contains(needs.*.result, 'failure')
 
   # jq1:
   #   runs-on: ubuntu-latest
