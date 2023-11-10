@@ -6,48 +6,48 @@ on:
       - main
 
 jobs:
-  basic:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        targets: ["a", "b", "c"]
-        exclude:
-          - targets: "c"
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-      - run: |
-          pnpm --filter @etm7fp/${{ matrix.targets }} run lint
+  # basic:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a", "b", "c"]
+  #       exclude:
+  #         - targets: "c"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Install dependencies
+  #       uses: ./.github/actions/install-dependencies
+  #     - run: |
+  #         pnpm --filter @etm7fp/${{ matrix.targets }} run lint
 
-  exclude:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        targets: ["a", "b", "c"]
-        exclude:
-          - targets: "a"
-          - targets: "b"
-          - targets: "c"
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
+  # exclude:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a", "b", "c"]
+  #       exclude:
+  #         - targets: "a"
+  #         - targets: "b"
+  #         - targets: "c"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
 
-  include:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        include:
-          - targets: "a"
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
+  # include:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - targets: "a"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
 
   changes:
     runs-on: ubuntu-latest
