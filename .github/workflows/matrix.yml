@@ -33,31 +33,31 @@ jobs:
   #     - run: |
   #         pnpm --filter @etm7fp/${{ matrix.targets }} run lint
 
-  exclude1:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        targets: ["a", "b", "c"]
-        exclude:
-          - targets: "a"
-          - targets: "b"
-          - targets: "c"
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
+  # exclude1:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a", "b", "c"]
+  #       exclude:
+  #         - targets: "a"
+  #         - targets: "b"
+  #         - targets: "c"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
 
-  exclude2:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    strategy:
-      matrix:
-        targets: ["a"]
-        exclude:
-          - targets: "b"
-    steps:
-      - run: |
-          echo "${{ matrix.targets }}"
+  # exclude2:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a"]
+  #       exclude:
+  #         - targets: "b"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
 
   # include:
   #   runs-on: ubuntu-latest
