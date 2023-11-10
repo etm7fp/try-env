@@ -120,29 +120,29 @@ jobs:
       - run: |
           pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
-  print:
+  passing:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: changes
+    needs: dynamic
     steps:
       - run: |
-          echo "${{ toJSON(needs.changes.outputs) }}"
+          echo "passing"
 
-  jq1:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - run: |
-          echo '[]' | jq 'length'
-  jq2:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - run: |
-          echo '["a"]' | jq 'length'
-  jq3:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - run: |
-          echo '["a","b"]' | jq 'length'
+  # jq1:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   steps:
+  #     - run: |
+  #         echo '[]' | jq 'length'
+  # jq2:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   steps:
+  #     - run: |
+  #         echo '["a"]' | jq 'length'
+  # jq3:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   steps:
+  #     - run: |
+  #         echo '["a","b"]' | jq 'length'
