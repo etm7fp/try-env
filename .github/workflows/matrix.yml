@@ -157,6 +157,7 @@ jobs:
     needs:
       - lint
       - test
+    if: failure() == false && contains(needs.*.result, 'cancelled') == false
     steps:
       - run: echo "$json"
         env:
