@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         targets: ["a", "b", "c"]
+        exclude:
+          - targets: "c"
     steps:
       - run: |
           echo "${{ matrix.targets }}"
