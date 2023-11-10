@@ -102,7 +102,25 @@ jobs:
   #     - run: |
   #         echo "${{ toJSON(needs.changes.outputs.changes) }}"
 
-  dynamic:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs:
+      - changes
+      # - check
+    if: needs.changes.outputs.length > 0
+    strategy:
+      matrix:
+        changes: ${{ fromJSON(needs.changes.outputs.changes) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+      - run: |
+          pnpm --filter @etm7fp/${{ matrix.changes }} run lint
+
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs:
@@ -123,10 +141,13 @@ jobs:
   passing:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: dynamic
+    needs:
+      - lint
+      - test
     steps:
-      - run: |
-          echo "passing"
+      - run: echo "$json"
+        env:
+          json: ${{ toJSON(needs) }}
 
   # jq1:
   #   runs-on: ubuntu-latest
