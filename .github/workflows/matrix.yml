@@ -77,7 +77,7 @@ jobs:
       - run: |
           echo "${{ steps.filter.outputs.changes }}"
       - run: |
-          echo "${{ steps.filter.outputs.changes }}" | jq length
+          echo '${{ steps.filter.outputs.changes }}' | jq 'length'
       - run: |
           length=$(echo "${{ steps.filter.outputs.changes }}" | jq 'length')
           echo "${length}"
@@ -124,16 +124,16 @@ jobs:
     timeout-minutes: 3
     steps:
       - run: |
-          echo "[]" | jq length
+          echo '[]' | jq 'length'
   jq2:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - run: |
-          echo "["a"]" | jq length
+          echo '["a"]' | jq 'length'
   jq3:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - run: |
-          echo "["a","b"]" | jq length
+          echo '["a","b"]' | jq 'length'
