@@ -163,6 +163,8 @@ jobs:
       - run: echo "$json"
         env:
           json: ${{ toJSON(needs) }}
+      - run: exit 1
+        if: failure()
 
   # jq1:
   #   runs-on: ubuntu-latest
