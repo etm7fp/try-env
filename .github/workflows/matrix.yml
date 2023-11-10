@@ -15,6 +15,12 @@ jobs:
     steps:
       - run: |
           echo "${{ matrix.targets }}"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+      - run: |
+          pnpm --filter @etm7fp/${{ matrix.targets }} run lint
 
   exclude:
     runs-on: ubuntu-latest
