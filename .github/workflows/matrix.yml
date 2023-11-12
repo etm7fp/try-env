@@ -81,6 +81,8 @@ jobs:
       b: ${{ steps.filter.outputs.b }}
       changes: ${{ steps.filter.outputs.changes }}
       length: ${{ steps.counter.outputs.length }}
+    permissions:
+      pull-requests: read
     steps:
       # see https://github.com/actions/checkout
       - name: Checkout
