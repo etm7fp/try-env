@@ -7,8 +7,6 @@ on:
       - stage
       - develop
     types:
-      - labeled
-      - unlabeled
       - opened
       - synchronize
 
