@@ -116,7 +116,7 @@ jobs:
       - run: echo '${{ toJSON(needs.prepare.outputs) }}'
       - if: needs.prepare.outputs.changed
         run: echo '${{ needs.prepare.outputs.changed }}'
-      - if: !needs.prepare.outputs.changed
+      - if: ${{ !needs.prepare.outputs.changed }}
         run: echo '${{ needs.prepare.outputs.changed }}'
       - if: needs.prepare.outputs.changed == 'true'
         run: echo '${{ needs.prepare.outputs.changed }}'
