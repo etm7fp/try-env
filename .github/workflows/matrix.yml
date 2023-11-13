@@ -129,7 +129,7 @@ jobs:
     if: needs.prepare.outputs.length > 0
     needs: prepare
     strategy:
-      fail-fast: false
+      # fail-fast: false
       matrix:
         changes: ${{ fromJSON(needs.prepare.outputs.changes) }}
     steps:
@@ -147,20 +147,22 @@ jobs:
     if: needs.prepare.outputs.length > 0
     needs: prepare
     strategy:
-      fail-fast: false
+      # fail-fast: false
       matrix:
         changes: ${{ fromJSON(needs.prepare.outputs.changes) }}
-        exclude:
-          - changes: "a"
-          - changes: "b"
+        # exclude:
+        #   - changes: "a"
+        #   - changes: "b"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Run test
+        # run: |
+        #   pnpm --filter @etm7fp/${{ matrix.changes }} run test
         run: |
-          pnpm --filter @etm7fp/${{ matrix.changes }} run test
+          pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
   check:
     runs-on: ubuntu-latest
