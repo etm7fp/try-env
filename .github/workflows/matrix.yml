@@ -10,10 +10,6 @@ on:
       - opened
       - synchronize
 
-  # push:
-  #   branches:
-  #     - main
-
 jobs:
   # basic:
   #   runs-on: ubuntu-latest
@@ -70,13 +66,11 @@ jobs:
   #     - run: |
   #         echo "${{ matrix.targets }}"
 
-  changes:
+  prepare:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip ci') }}
     outputs:
-      a: ${{ steps.filter.outputs.a }}
-      b: ${{ steps.filter.outputs.b }}
       changes: ${{ steps.filter.outputs.changes }}
       length: ${{ steps.counter.outputs.length }}
     permissions:
@@ -97,92 +91,64 @@ jobs:
               - 'apps/a/**'
             b:
               - 'apps/b/**'
-      - run: |
-          echo "${{ toJSON(steps.filter.outputs) }}"
-      - run: |
-          echo "${{ steps.filter.outputs.changes }}"
-      - run: |
-          echo '${{ steps.filter.outputs.changes }}' | jq 'length'
-      - run: |
-          length=$(echo '${{ steps.filter.outputs.changes }}' | jq 'length')
-          echo "${length}"
-          echo "length=${length}" >> $GITHUB_OUTPUT
+      - name: Print filtered outputs
+        run: |
+          echo '${{ toJSON(steps.filter.outputs) }}'
+      - name: Set length
         id: counter
-
-  # check:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 3
-  #   needs: changes
-  #   if: join(needs.changes.outputs.changes) != '[]'
-  #   steps:
-  #     - run: |
-  #         echo "${{ toJSON(needs.changes.outputs.changes) }}"
+        run: |
+          length=$(echo '${{ steps.filter.outputs.changes }}' | jq 'length')
+          echo "length=${length}" >> $GITHUB_OUTPUT
 
   lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-    needs:
-      - changes
-      # - check
-    if: needs.changes.outputs.length > 0
+    timeout-minutes: 10
+    if: needs.prepare.outputs.length > 0
+    needs: prepare
     strategy:
       matrix:
-        changes: ${{ fromJSON(needs.changes.outputs.changes) }}
+        changes: ${{ fromJSON(needs.prepare.outputs.changes) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
-      - run: |
+      - name: Run lint
+        run: |
           pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-    needs:
-      - changes
-      # - check
-    if: needs.changes.outputs.length > 0
+    timeout-minutes: 10
+    if: needs.prepare.outputs.length > 0
+    needs: prepare
     strategy:
       matrix:
-        changes: ${{ fromJSON(needs.changes.outputs.changes) }}
+        changes: ${{ fromJSON(needs.prepare.outputs.changes) }}
+        exclude:
+          - changes: "a"
+          - changes: "b"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
-      - run: |
+      - name: Run test
+        run: |
           pnpm --filter @etm7fp/${{ matrix.changes }} run lint
 
-  passing:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    if: ${{ !cancelled() }}
     needs:
       - lint
       - test
-    if: ${{ !cancelled() }}
     steps:
-      - run: echo "$json"
-        env:
-          json: ${{ toJSON(needs) }}
-      - run: exit 1
+      - name: Print needs object
+        run: |
+          echo '${{ toJSON(needs) }}'
+      - name: Setting a failure exit code
         if: contains(needs.*.result, 'failure')
-
-  # jq1:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 3
-  #   steps:
-  #     - run: |
-  #         echo '[]' | jq 'length'
-  # jq2:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 3
-  #   steps:
-  #     - run: |
-  #         echo '["a"]' | jq 'length'
-  # jq3:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 3
-  #   steps:
-  #     - run: |
-  #         echo '["a","b"]' | jq 'length'
+        run: |
+          exit 1
