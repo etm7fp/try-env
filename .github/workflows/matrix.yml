@@ -71,6 +71,7 @@ jobs:
     timeout-minutes: 3
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip ci') }}
     outputs:
+      changed: ${{ steps.set-changed.outputs.changed }}
       changes: ${{ steps.filter.outputs.changes }}
       length: ${{ steps.counter.outputs.length }}
     permissions:
@@ -101,6 +102,26 @@ jobs:
         run: |
           length=$(echo '${{ steps.filter.outputs.changes }}' | jq 'length')
           echo "length=${length}" >> $GITHUB_OUTPUT
+      - name: Set changed
+        id: set-changed
+        run: |
+          changed=$(echo '${{ steps.filter.outputs.changes }}' | jq 'if length > 0 then true else false end')
+          echo "changed=${changed}" >> $GITHUB_OUTPUT
+
+  bool:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: prepare
+    steps:
+      - run: echo '${{ toJSON(needs.prepare.outputs) }}'
+      - if: needs.prepare.outputs.changed
+        run: echo '${{ needs.prepare.outputs.changed }}'
+      - if: !needs.prepare.outputs.changed
+        run: echo '${{ needs.prepare.outputs.changed }}'
+      - if: needs.prepare.outputs.changed == 'true'
+        run: echo '${{ needs.prepare.outputs.changed }}'
+      - if: needs.prepare.outputs.changed == 'false'
+        run: echo '${{ needs.prepare.outputs.changed }}'
 
   lint:
     runs-on: ubuntu-latest
