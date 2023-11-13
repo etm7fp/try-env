@@ -91,6 +91,8 @@ jobs:
               - 'apps/a/**'
             b:
               - 'apps/b/**'
+            c:
+              - 'apps/c/**'
       - name: Print filtered outputs
         run: |
           echo '${{ toJSON(steps.filter.outputs) }}'
