@@ -137,7 +137,7 @@ jobs:
         uses: ./.github/actions/install-dependencies
       - name: Run test
         run: |
-          pnpm --filter @etm7fp/${{ matrix.changes }} run lint
+          pnpm --filter @etm7fp/${{ matrix.changes }} run test
 
   check:
     runs-on: ubuntu-latest
