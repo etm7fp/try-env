@@ -1,0 +1,17 @@
+name: pull-request
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: |
+          echo "${{ github.ref_name }}"
+          echo "${{ toJSON(github.event) }}"
