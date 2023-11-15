@@ -29,3 +29,11 @@ jobs:
       - name: Print var
         run: |
           echo "${{ vars.DEPLOY_ENV }}"
+
+  throw-error:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: debug
+    steps:
+      - run: |
+          exit 1
