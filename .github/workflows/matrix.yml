@@ -147,7 +147,7 @@ jobs:
     if: needs.prepare.outputs.length > 0
     needs: prepare
     strategy:
-      # fail-fast: false
+      fail-fast: false
       matrix:
         changes: ${{ fromJSON(needs.prepare.outputs.changes) }}
         # exclude:
