@@ -1,5 +1,8 @@
 {
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@8.7.4"
+  "packageManager": "pnpm@8.7.4",
+  "devDependencies": {
+    "sort-package-json": "^2.6.0"
+  }
 }
