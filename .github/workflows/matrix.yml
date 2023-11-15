@@ -1,0 +1,139 @@
+name: matrix
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # basic:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a", "b", "c"]
+  #       exclude:
+  #         - targets: "c"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Install dependencies
+  #       uses: ./.github/actions/install-dependencies
+  #     - run: |
+  #         pnpm --filter @etm7fp/${{ matrix.targets }} run lint
+
+  # exclude:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       targets: ["a", "b", "c"]
+  #       exclude:
+  #         - targets: "a"
+  #         - targets: "b"
+  #         - targets: "c"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
+
+  # include:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - targets: "a"
+  #   steps:
+  #     - run: |
+  #         echo "${{ matrix.targets }}"
+
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      a: ${{ steps.filter.outputs.a }}
+      b: ${{ steps.filter.outputs.b }}
+      changes: ${{ steps.filter.outputs.changes }}
+      length: ${{ steps.counter.outputs.length }}
+    steps:
+      # see https://github.com/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # see https://github.com/dorny/paths-filter
+      - name: Change detection
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            a:
+              - 'apps/a/**'
+            b:
+              - 'apps/b/**'
+      - run: |
+          echo "${{ toJSON(steps.filter.outputs) }}"
+      - run: |
+          echo "${{ steps.filter.outputs.changes }}"
+      - run: |
+          echo "${{ steps.filter.outputs.changes }}" | jq length
+      - run: |
+          length=$(echo "${{ steps.filter.outputs.changes }}" | jq 'length')
+          echo "${length}"
+          echo "length=${length}" >> $GITHUB_OUTPUT
+        id: counter
+
+  # check:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 3
+  #   needs: changes
+  #   if: join(needs.changes.outputs.changes) != '[]'
+  #   steps:
+  #     - run: |
+  #         echo "${{ toJSON(needs.changes.outputs.changes) }}"
+
+  dynamic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs:
+      - changes
+      # - check
+    if: needs.changes.outputs.length > 0
+    strategy:
+      matrix:
+        changes: ${{ fromJSON(needs.changes.outputs.changes) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+      - run: |
+          pnpm --filter @etm7fp/${{ matrix.changes }} run lint
+
+  print:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    steps:
+      - run: |
+          echo "${{ toJSON(needs.changes.outputs) }}"
+
+  jq1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: |
+          echo "[]" | jq length
+  jq2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: |
+          echo "["a"]" | jq length
+  jq3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: |
+          echo "["a","b"]" | jq length

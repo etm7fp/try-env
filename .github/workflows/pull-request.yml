@@ -13,5 +13,16 @@ jobs:
     timeout-minutes: 3
     steps:
       - run: |
+          echo "${{ github.ref }}"
           echo "${{ github.ref_name }}"
-          echo "${{ toJSON(github.event) }}"
+
+  env:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: debug
+    environment:
+      name: production
+    steps:
+      - name: Print var
+        run: |
+          echo "${{ vars.DEPLOY_ENV }}"

@@ -1,32 +1,63 @@
 name: paths-filter
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "apps/a/**"
+  #     - "apps/b/**"
+  #     - "!**.md"
+  workflow_dispatch:
 
 jobs:
-  filter:
+  changes:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
+    if: github.event_name == 'push'
+    outputs:
+      a: ${{ steps.filter.outputs.a }}
+      b: ${{ steps.filter.outputs.b }}
     steps:
-      - run: cat $GITHUB_EVENT_PATH
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v2
-        id: changes
+      # see https://github.com/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # see https://github.com/dorny/paths-filter
+      - name: Change detection
+        uses: dorny/paths-filter@v2
+        id: filter
         with:
           filters: |
             a:
               - 'apps/a/**'
             b:
               - 'apps/b/**'
-            configs:
-              - 'packages/configs/**'
-      - if: steps.changes.outputs.a == 'true'
-        run: |
+      - run: |
+          echo "${{ toJSON(steps.filter.outputs) }}"
+
+  a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.a == 'true'
+    steps:
+      - run: |
           echo a
-      - if: steps.changes.outputs.b == 'true'
-        run: |
+
+  b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.b == 'true'
+    steps:
+      - run: |
           echo b
-      - if: steps.changes.outputs.configs == 'true'
-        run: |
-          echo configs
+
+  c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - run: |
+          echo workflow_dispatch
