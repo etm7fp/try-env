@@ -126,7 +126,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: needs.prepare.outputs.length > 0
+    if: needs.prepare.outputs.changed == 'true'
     needs: prepare
     strategy:
       fail-fast: false
@@ -144,7 +144,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: needs.prepare.outputs.length > 0
+    if: needs.prepare.outputs.changed == 'true'
     needs: prepare
     strategy:
       fail-fast: false
