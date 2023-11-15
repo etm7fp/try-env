@@ -60,6 +60,8 @@ jobs:
   empty-url:
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
+    needs:
+      - production
     environment:
       name: production
       url: ""
