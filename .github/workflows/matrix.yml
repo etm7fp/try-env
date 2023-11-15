@@ -94,6 +94,8 @@ jobs:
               - 'apps/b/**'
             c:
               - 'apps/c/**'
+            package.json:
+              - '**/package.json'
       - name: Print filtered outputs
         run: |
           echo '${{ toJSON(steps.filter.outputs) }}'
@@ -138,8 +140,13 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
       - name: Run lint
+        if: matrix.changes != 'package.json'
         run: |
           pnpm --filter @etm7fp/${{ matrix.changes }} run lint
+      - name: Run sort-package-json
+        if: matrix.changes != 'package.json'
+        run: |
+          pnpm exec sort-package-json '**/package.json' '!**/node_modules' --check
 
   test:
     runs-on: ubuntu-latest
